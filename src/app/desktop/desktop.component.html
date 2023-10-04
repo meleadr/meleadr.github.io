@@ -7,7 +7,7 @@
       <i class="pi pi-video"></i>
       <i class="pi pi-wifi"></i>
       <i class="pi pi-volume-up"></i>
-      <span>Fri 13:07</span>
+      <span class="clock">{{ time | date: "HH:mm:ss" }}</span>
       <i class="pi pi-search"></i>
       <i class="pi pi-bars"></i>
     </ng-template>
@@ -21,12 +21,33 @@
 
     <p-toast></p-toast>
 
-    <p-dialog [(visible)]="displayFinder" [breakpoints]="{ '960px': '50vw' }" [style]="{ width: '30vw', height: '18rem' }" [draggable]="false" [resizable]="false">
-      <p-tree [value]="nodes"></p-tree>
+    <p-dialog
+      [(visible)]="displayFinder"
+      [breakpoints]="{ '960px': '50vw' }"
+      [style]="{ width: '40vw', height: '20rem' }"
+      [draggable]="false"
+      [resizable]="false"
+    >
+      <p-tree
+        [value]="nodes"
+        [(selection)]="selectedNode"
+        (onNodeSelect)="onNodeSelect()"
+        [selectionMode]="'single'"
+      ></p-tree>
     </p-dialog>
 
-    <p-dialog [maximizable]="true" [(visible)]="displayTerminal" [breakpoints]="{ '960px': '50vw' }" [style]="{ width: '30vw' }" [draggable]="false" [resizable]="false">
-      <p-terminal welcomeMessage="Welcome to PrimeNG (cmd: 'date', 'greet {0}', 'random')" prompt="primeng $"></p-terminal>
+    <p-dialog
+      [maximizable]="true"
+      [(visible)]="displayTerminal"
+      [breakpoints]="{ '960px': '50vw' }"
+      [style]="{ width: '30vw' }"
+      [draggable]="false"
+      [resizable]="false"
+    >
+      <p-terminal
+        welcomeMessage="Welcome to my terminal (cmd: 'date', 'greet {0}', 'random')"
+        prompt="meleadr $"
+      ></p-terminal>
     </p-dialog>
 
     <p-galleria
@@ -35,14 +56,17 @@
       [showThumbnailNavigators]="false"
       [showItemNavigators]="true"
       [(visible)]="displayGalleria"
-      [circular]="true"
       [responsiveOptions]="responsiveOptions"
       [containerStyle]="{ 'max-width': '850px' }"
       [circular]="true"
       [fullScreen]="true"
     >
       <ng-template pTemplate="item" let-item>
-        <img [src]="item.previewImageSrc" style="width: 100%; display: block;" />
+        <img
+          [src]="item.itemImageSrc"
+          style="width: 100%; display: block"
+          [alt]="item.alt"
+        />
       </ng-template>
     </p-galleria>
   </div>

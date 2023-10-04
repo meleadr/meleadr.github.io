@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -11,6 +11,7 @@ import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
 import { TreeModule } from 'primeng/tree';
 import { GalleriaModule } from 'primeng/galleria';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -25,29 +26,24 @@ import { GalleriaModule } from 'primeng/galleria';
     TreeModule,
     TerminalModule,
     GalleriaModule,
+    FormsModule,
   ],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  templateUrl: './desktop.component.html',
+  styleUrls: ['./desktop.component.scss'],
   providers: [PhotoService, NodeService, MessageService, TerminalService],
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class DesktopComponent implements OnInit, OnDestroy, AfterViewInit {
   displayTerminal!: boolean;
-
   displayFinder!: boolean;
-
   displayGalleria!: boolean;
-
   dockItems!: MenuItem[];
-
   menubarItems!: any[];
-
   responsiveOptions!: any[];
-
   images!: any[];
-
   nodes!: any[];
-
   subscription!: Subscription;
+  time: Date = new Date();
+  selectedNode: any;
 
   constructor(
     private galleriaService: PhotoService,
@@ -67,7 +63,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           positionLeft: 15,
           showDelay: 1000,
         },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/finder.svg',
+        icon: '/assets/img/dock/finder.svg',
         command: () => {
           this.displayFinder = true;
         },
@@ -81,7 +77,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           positionLeft: 15,
           showDelay: 1000,
         },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/terminal.svg',
+        icon: '/assets/img/dock/terminal.svg',
         command: () => {
           this.displayTerminal = true;
         },
@@ -95,7 +91,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           positionLeft: 15,
           showDelay: 1000,
         },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/appstore.svg',
+        icon: '/assets/img/dock/appstore.svg',
         command: () => {
           this.messageService.add({
             severity: 'error',
@@ -113,7 +109,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           positionLeft: 15,
           showDelay: 1000,
         },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/safari.svg',
+        icon: '/assets/img/dock/safari.svg',
         command: () => {
           this.messageService.add({
             severity: 'warn',
@@ -130,13 +126,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           positionLeft: 15,
           showDelay: 1000,
         },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/photos.svg',
+        icon: '/assets/img/dock/photos.svg',
         command: () => {
           this.displayGalleria = true;
         },
       },
       {
         label: 'GitHub',
+        url: 'https://github.com/meleadr/',
         tooltipOptions: {
           tooltipLabel: 'GitHub',
           tooltipPosition: 'top',
@@ -144,7 +141,31 @@ export class HomeComponent implements OnInit, OnDestroy {
           positionLeft: 15,
           showDelay: 1000,
         },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/github.svg',
+        icon: '/assets/img/dock/github.svg',
+      },
+      {
+        label: 'LinkedIn',
+        url: 'https://linkedin.com/in/meleadr/',
+        tooltipOptions: {
+          tooltipLabel: 'LinkedIn',
+          tooltipPosition: 'top',
+          positionTop: -15,
+          positionLeft: 15,
+          showDelay: 1000,
+        },
+        icon: '/assets/img/dock/linkedin.svg',
+      },
+      {
+        label: 'Discord',
+        url: 'https://linkedin.com/in/meleadr/',
+        tooltipOptions: {
+          tooltipLabel: 'Discord',
+          tooltipPosition: 'top',
+          positionTop: -15,
+          positionLeft: 15,
+          showDelay: 1000,
+        },
+        icon: '/assets/img/dock/discord.svg',
       },
       {
         label: 'Trash',
@@ -155,7 +176,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           positionLeft: 15,
           showDelay: 1000,
         },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/trash.png',
+        icon: '/assets/img/dock/trash.png',
         command: () => {
           this.messageService.add({ severity: 'info', summary: 'Empty Trash' });
         },
@@ -319,11 +340,23 @@ export class HomeComponent implements OnInit, OnDestroy {
         break;
 
       case 'greet':
-        response = 'Hola ' + text.substring(argsIndex + 1) + '!';
+        response = 'Hi ' + text.substring(argsIndex + 1) + '!';
         break;
 
       case 'random':
         response = Math.floor(Math.random() * 100);
+        break;
+
+      case 'clear':
+        break;
+
+      case 'ls':
+        response = this.nodeService.getFiles();
+        console.log(response);
+        break;
+
+      case 'help':
+        response = 'Available commands: date, greet, random';
         break;
 
       default:
@@ -334,6 +367,42 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (response) {
       this.terminalService.sendResponse(response as string);
     }
+  }
+
+  onNodeSelect() {
+    console.log(this.selectedNode);
+    switch (this.selectedNode.key) {
+      case '0-0-0':
+        this.messageService.add({
+          severity: 'success',
+          summary: this.selectedNode.label,
+          detail: 'Resume started downloading',
+        });
+        window.open('/assets/files/Resume.pdf');
+        break;
+      case '0-0-1':
+        this.messageService.add({
+          severity: 'success',
+          summary: this.selectedNode.label,
+          detail: 'Cover Letter started downloading',
+        });
+        window.open('/assets/files/CoverLetter.pdf');
+        break;
+      case '2-0':
+        this.messageService.add({
+          severity: 'success',
+          summary: this.selectedNode.label,
+          detail: 'Starting trailer',
+        });
+        window.open(this.selectedNode.data);
+        break;
+    }
+  }
+
+  ngAfterViewInit() {
+    setInterval(() => {
+      this.time = new Date();
+    }, 1000);
   }
 
   ngOnDestroy() {
