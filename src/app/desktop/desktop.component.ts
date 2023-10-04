@@ -83,6 +83,24 @@ export class DesktopComponent implements OnInit, OnDestroy, AfterViewInit {
         },
       },
       {
+        label: 'Calendar',
+        tooltipOptions: {
+          tooltipLabel: 'Calendar',
+          tooltipPosition: 'top',
+          positionTop: -15,
+          positionLeft: 15,
+          showDelay: 1000,
+        },
+        icon: '/assets/img/dock/calendar.svg',
+        command: () => {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Calendar',
+            detail: 'No events scheduled',
+          });
+        },
+      },
+      {
         label: 'App Store',
         tooltipOptions: {
           tooltipLabel: 'App Store',
