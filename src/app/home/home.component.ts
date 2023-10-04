@@ -1,31 +1,36 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {MenuItem, MessageService} from "primeng/api";
-import {Subscription} from "rxjs";
-import {PhotoService} from "../services/photo.service";
-import {NodeService} from "../services/node.service";
-import {TerminalModule, TerminalService} from "primeng/terminal";
-import {MenubarModule} from "primeng/menubar";
-import {DockModule} from "primeng/dock";
-import {ToastModule} from "primeng/toast";
-import {DialogModule} from "primeng/dialog";
-import {TreeModule} from "primeng/tree";
-import {GalleriaModule} from "primeng/galleria";
+import { MenuItem, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
+import { PhotoService } from '../services/photo.service';
+import { NodeService } from '../services/node.service';
+import { TerminalModule, TerminalService } from 'primeng/terminal';
+import { MenubarModule } from 'primeng/menubar';
+import { DockModule } from 'primeng/dock';
+import { ToastModule } from 'primeng/toast';
+import { DialogModule } from 'primeng/dialog';
+import { TreeModule } from 'primeng/tree';
+import { GalleriaModule } from 'primeng/galleria';
 
 @Component({
   selector: 'app-home',
+
   standalone: true,
-  imports: [CommonModule, MenubarModule, DockModule, ToastModule, DialogModule, TreeModule, TerminalModule, GalleriaModule],
+  imports: [
+    CommonModule,
+    MenubarModule,
+    DockModule,
+    ToastModule,
+    DialogModule,
+    TreeModule,
+    TerminalModule,
+    GalleriaModule,
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers:[
-    PhotoService,
-    NodeService,
-    MessageService,
-    TerminalService
-  ]
+  providers: [PhotoService, NodeService, MessageService, TerminalService],
 })
-export class HomeComponent implements OnInit, OnDestroy{
+export class HomeComponent implements OnInit, OnDestroy {
   displayTerminal!: boolean;
 
   displayFinder!: boolean;
@@ -44,7 +49,12 @@ export class HomeComponent implements OnInit, OnDestroy{
 
   subscription!: Subscription;
 
-  constructor(private galleriaService: PhotoService, private nodeService: NodeService, private messageService: MessageService, private terminalService: TerminalService) {}
+  constructor(
+    private galleriaService: PhotoService,
+    private nodeService: NodeService,
+    private messageService: MessageService,
+    private terminalService: TerminalService,
+  ) {}
 
   ngOnInit() {
     this.dockItems = [
@@ -55,12 +65,12 @@ export class HomeComponent implements OnInit, OnDestroy{
           tooltipPosition: 'top',
           positionTop: -15,
           positionLeft: 15,
-          showDelay: 1000
+          showDelay: 1000,
         },
         icon: 'https://primefaces.org/cdn/primeng/images/dock/finder.svg',
         command: () => {
           this.displayFinder = true;
-        }
+        },
       },
       {
         label: 'Terminal',
@@ -69,12 +79,12 @@ export class HomeComponent implements OnInit, OnDestroy{
           tooltipPosition: 'top',
           positionTop: -15,
           positionLeft: 15,
-          showDelay: 1000
+          showDelay: 1000,
         },
         icon: 'https://primefaces.org/cdn/primeng/images/dock/terminal.svg',
         command: () => {
           this.displayTerminal = true;
-        }
+        },
       },
       {
         label: 'App Store',
@@ -83,12 +93,16 @@ export class HomeComponent implements OnInit, OnDestroy{
           tooltipPosition: 'top',
           positionTop: -15,
           positionLeft: 15,
-          showDelay: 1000
+          showDelay: 1000,
         },
         icon: 'https://primefaces.org/cdn/primeng/images/dock/appstore.svg',
         command: () => {
-          this.messageService.add({ severity: 'error', summary: 'An unexpected error occurred while signing in.', detail: 'UNTRUSTED_CERT_TITLE' });
-        }
+          this.messageService.add({
+            severity: 'error',
+            summary: 'An unexpected error occurred while signing in.',
+            detail: 'UNTRUSTED_CERT_TITLE',
+          });
+        },
       },
       {
         label: 'Safari',
@@ -97,12 +111,15 @@ export class HomeComponent implements OnInit, OnDestroy{
           tooltipPosition: 'top',
           positionTop: -15,
           positionLeft: 15,
-          showDelay: 1000
+          showDelay: 1000,
         },
         icon: 'https://primefaces.org/cdn/primeng/images/dock/safari.svg',
         command: () => {
-          this.messageService.add({ severity: 'warn', summary: 'Safari has stopped working' });
-        }
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Safari has stopped working',
+          });
+        },
       },
       {
         label: 'Photos',
@@ -111,12 +128,12 @@ export class HomeComponent implements OnInit, OnDestroy{
           tooltipPosition: 'top',
           positionTop: -15,
           positionLeft: 15,
-          showDelay: 1000
+          showDelay: 1000,
         },
         icon: 'https://primefaces.org/cdn/primeng/images/dock/photos.svg',
         command: () => {
           this.displayGalleria = true;
-        }
+        },
       },
       {
         label: 'GitHub',
@@ -125,9 +142,9 @@ export class HomeComponent implements OnInit, OnDestroy{
           tooltipPosition: 'top',
           positionTop: -15,
           positionLeft: 15,
-          showDelay: 1000
+          showDelay: 1000,
         },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/github.svg'
+        icon: 'https://primefaces.org/cdn/primeng/images/dock/github.svg',
       },
       {
         label: 'Trash',
@@ -136,19 +153,19 @@ export class HomeComponent implements OnInit, OnDestroy{
           tooltipPosition: 'top',
           positionTop: -15,
           positionLeft: 15,
-          showDelay: 1000
+          showDelay: 1000,
         },
         icon: 'https://primefaces.org/cdn/primeng/images/dock/trash.png',
         command: () => {
           this.messageService.add({ severity: 'info', summary: 'Empty Trash' });
-        }
-      }
+        },
+      },
     ];
 
     this.menubarItems = [
       {
         label: 'Finder',
-        styleClass: 'menubar-root'
+        styleClass: 'menubar-root',
       },
       {
         label: 'File',
@@ -159,58 +176,58 @@ export class HomeComponent implements OnInit, OnDestroy{
             items: [
               {
                 label: 'Bookmark',
-                icon: 'pi pi-fw pi-bookmark'
+                icon: 'pi pi-fw pi-bookmark',
               },
               {
                 label: 'Video',
-                icon: 'pi pi-fw pi-video'
-              }
-            ]
+                icon: 'pi pi-fw pi-video',
+              },
+            ],
           },
           {
             label: 'Delete',
-            icon: 'pi pi-fw pi-trash'
+            icon: 'pi pi-fw pi-trash',
           },
           {
-            separator: true
+            separator: true,
           },
           {
             label: 'Export',
-            icon: 'pi pi-fw pi-external-link'
-          }
-        ]
+            icon: 'pi pi-fw pi-external-link',
+          },
+        ],
       },
       {
         label: 'Edit',
         items: [
           {
             label: 'Left',
-            icon: 'pi pi-fw pi-align-left'
+            icon: 'pi pi-fw pi-align-left',
           },
           {
             label: 'Right',
-            icon: 'pi pi-fw pi-align-right'
+            icon: 'pi pi-fw pi-align-right',
           },
           {
             label: 'Center',
-            icon: 'pi pi-fw pi-align-center'
+            icon: 'pi pi-fw pi-align-center',
           },
           {
             label: 'Justify',
-            icon: 'pi pi-fw pi-align-justify'
-          }
-        ]
+            icon: 'pi pi-fw pi-align-justify',
+          },
+        ],
       },
       {
         label: 'Users',
         items: [
           {
             label: 'New',
-            icon: 'pi pi-fw pi-user-plus'
+            icon: 'pi pi-fw pi-user-plus',
           },
           {
             label: 'Delete',
-            icon: 'pi pi-fw pi-user-minus'
+            icon: 'pi pi-fw pi-user-minus',
           },
           {
             label: 'Search',
@@ -222,17 +239,17 @@ export class HomeComponent implements OnInit, OnDestroy{
                 items: [
                   {
                     label: 'Print',
-                    icon: 'pi pi-fw pi-print'
-                  }
-                ]
+                    icon: 'pi pi-fw pi-print',
+                  },
+                ],
               },
               {
                 icon: 'pi pi-fw pi-bars',
-                label: 'List'
-              }
-            ]
-          }
-        ]
+                label: 'List',
+              },
+            ],
+          },
+        ],
       },
       {
         label: 'Events',
@@ -243,13 +260,13 @@ export class HomeComponent implements OnInit, OnDestroy{
             items: [
               {
                 label: 'Save',
-                icon: 'pi pi-fw pi-calendar-plus'
+                icon: 'pi pi-fw pi-calendar-plus',
               },
               {
                 label: 'Delete',
-                icon: 'pi pi-fw pi-calendar-minus'
-              }
-            ]
+                icon: 'pi pi-fw pi-calendar-minus',
+              },
+            ],
           },
           {
             label: 'Archieve',
@@ -257,33 +274,35 @@ export class HomeComponent implements OnInit, OnDestroy{
             items: [
               {
                 label: 'Remove',
-                icon: 'pi pi-fw pi-calendar-minus'
-              }
-            ]
-          }
-        ]
+                icon: 'pi pi-fw pi-calendar-minus',
+              },
+            ],
+          },
+        ],
       },
       {
-        label: 'Quit'
-      }
+        label: 'Quit',
+      },
     ];
 
     this.responsiveOptions = [
       {
         breakpoint: '1024px',
-        numVisible: 3
+        numVisible: 3,
       },
       {
         breakpoint: '768px',
-        numVisible: 2
+        numVisible: 2,
       },
       {
         breakpoint: '560px',
-        numVisible: 1
-      }
+        numVisible: 1,
+      },
     ];
 
-    this.subscription = this.terminalService.commandHandler.subscribe((command) => this.commandHandler(command));
+    this.subscription = this.terminalService.commandHandler.subscribe(
+      (command) => this.commandHandler(command),
+    );
 
     this.galleriaService.getImages().then((data) => (this.images = data));
     this.nodeService.getFiles().then((data) => (this.nodes = data));
