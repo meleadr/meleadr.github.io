@@ -1,14 +1,14 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuItem, MessageService } from 'primeng/api';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { PhotoService } from '../services/photo.service';
 import { NodeService } from '../services/node.service';
 import { TerminalModule, TerminalService } from 'primeng/terminal';
 import { MenubarModule } from 'primeng/menubar';
 import { DockModule } from 'primeng/dock';
 import { ToastModule } from 'primeng/toast';
-import { DialogModule } from 'primeng/dialog';
+import { Dialog, DialogModule } from 'primeng/dialog';
 import { TreeModule } from 'primeng/tree';
 import { GalleriaModule } from 'primeng/galleria';
 import { FormsModule } from '@angular/forms';
@@ -42,7 +42,7 @@ export class DesktopComponent implements OnInit, OnDestroy, AfterViewInit {
   images!: any[];
   nodes!: any[];
   subscription!: Subscription;
-  time: Date = new Date();
+  time: BehaviorSubject<Date> = new BehaviorSubject(new Date());
   selectedNode: any;
 
   constructor(
@@ -321,6 +321,9 @@ export class DesktopComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       {
         label: 'Quit',
+        command: () => {
+          this.messageService.add({ severity: 'info', summary: 'Quit' });
+        },
       },
     ];
 
@@ -388,7 +391,6 @@ export class DesktopComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onNodeSelect() {
-    console.log(this.selectedNode);
     switch (this.selectedNode.key) {
       case '0-0-0':
         this.messageService.add({
@@ -417,9 +419,13 @@ export class DesktopComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  onDialogDrag(dialog: Dialog) {
+    dialog.moveOnTop();
+  }
+
   ngAfterViewInit() {
     setInterval(() => {
-      this.time = new Date();
+      this.time.next(new Date());
     }, 1000);
   }
 
