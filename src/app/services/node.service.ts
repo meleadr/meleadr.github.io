@@ -90,6 +90,12 @@ export class NodeService {
             icon: 'pi pi-fw pi-video',
             data: 'https://youtu.be/2ilzidi_J8Q',
           },
+          {
+            key: '2-2',
+            label: 'Oppenheimer - Christopher Nolan',
+            icon: 'pi pi-fw pi-video',
+            data: 'https://youtu.be/uYPbbksJxIg',
+          },
         ],
       },
     ];
